@@ -1,62 +1,30 @@
-# This file is basically me exploring the data set
-# I made a deisgn choice to pad 0 to all the permutations to have length 7
-# Because I am trying to predict the Coxeter length for permutation with length 7
-# I want to fix for the permutation length for now 
-
 import pandas as pd
-import numpy as np
 import ast
 
-# load the cv
-df = pd.read_csv("coxeter_length_data.csv")
+def load_data(path="coxeter_length_data.csv"):
+    df = pd.read_csv(path)
+    df["permutation"] = df["permutation"].apply(ast.literal_eval)
+    return df
 
-#print(df.head())
-#print(df.shape)
+def stratified_split(df, splits=(0.7, 0.15, 0.15), seed=42):
+    train_dfs, val_dfs, test_dfs = [], [], []
+    for n, group in df.groupby("n"):
+        group = group.sample(frac=1, random_state=seed)
+        n_train = int(splits[0] * len(group))
+        n_val = int(splits[1] * len(group))
+        train_dfs.append(group.iloc[:n_train])
+        val_dfs.append(group.iloc[n_train:n_train+n_val])
+        test_dfs.append(group.iloc[n_train+n_val:])
+    return pd.concat(train_dfs), pd.concat(val_dfs), pd.concat(test_dfs)
 
-# convert permutations back to a list
-df["permutation"] = df["permutation"].apply(ast.literal_eval)
-
-#print(df["permutation"][0])
-#print(type(df["permutation"][0]))
-
-# pad zeros to all permutations to have length 7
-MAX_LENGTH = 7
-
-# Input: permutation list
-# Output: permutation list with all entries having length 7
-def pad_permutation(perm):
-    return perm + [0] * (MAX_LENGTH - len(perm))
-
-# create a new list
-df["input"] = df["permutation"].apply(pad_permutation)
-
-# check to see if all entries now have length 7
-#print(df[["permutation", "input"]].head())
-
-# have X being the permutations
-X = df["input"].tolist()
-# have y being the coxeter length 
-y = df["coxeter_length"].tolist()
-
-#print(X[0])
-#print(y[0])
-
-# since pytorch works well with numpy arrays,
-# we will convert lists into arrays 
-
-X = np.array(X, dtype=np.float32)
-y = np.array(y, dtype=np.float32)
-
-#print(X.shape)
-#print(y.shape)
-
-# Sanity check
-#for i in range(5):
-    #print(f"Original: {df['permutation'][i]}")
-    #print(f"Padded : {X[i]}")
-    #print(f"Length : {y[i]}")
-    #print()
+def encode_permutation(perm):
+    # values are already 1..n integers; just return as a long tensor later
+    return perm
 
 if __name__ == "__main__":
-    print(f"X shape: {X.shape}")
-    print(f"y shape: {y.shape}")
+    df = load_data()
+    train_df, val_df, test_df = stratified_split(df)
+    train_df.to_csv("train.csv", index=False)
+    val_df.to_csv("val.csv", index=False)
+    test_df.to_csv("test.csv", index=False)
+    print(f"train={len(train_df)} val={len(val_df)} test={len(test_df)}")

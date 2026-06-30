@@ -1,18 +1,57 @@
+import json
+import pandas as pd
 import torch
 import torch.nn as nn
-import torch.optim as optim
-from sklearn.model_selection import train_test_split
+from torch.utils.data import DataLoader
 
-from preprocess import X, y
+from data_utils import PermutationDataset, collate_fn, LengthPredictor
 
 
-# train test split 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
-)
+def train_model(model, train_loader, val_loader, epochs=40, lr=1e-3, device="cpu"):
+    opt = torch.optim.Adam(model.parameters(), lr=lr)
+    loss_fn = nn.MSELoss()
+    history = {"train_loss": [], "val_loss": []}
 
-X_train = torch.tensor(X_train, dtype=torch.float32)
-y_train = torch.tensor(y_train, dtype=torch.float32).view(-1, 1)
+    for epoch in range(epochs):
+        model.train()
+        total = 0
+        for x, lens, y in train_loader:
+            x, y = x.to(device), y.to(device)
+            opt.zero_grad()
+            pred = model(x, lens)
+            loss = loss_fn(pred, y)
+            loss.backward()
+            opt.step()
+            total += loss.item() * len(y)
+        train_loss = total / len(train_loader.dataset)
 
-X_test = torch.tensor(X_test, dtype=torch.float32)
-y_test = torch.tensor(y_test, dtype=torch.float32).view(-1, 1)
+        model.eval()
+        with torch.no_grad():
+            val_total = sum(
+                loss_fn(model(x.to(device), lens), y.to(device)).item() * len(y)
+                for x, lens, y in val_loader
+            )
+        val_loss = val_total / len(val_loader.dataset)
+
+        history["train_loss"].append(train_loss)
+        history["val_loss"].append(val_loss)
+        if (epoch + 1) % 5 == 0 or epoch == 0:
+            print(f"epoch {epoch+1:3d}: train={train_loss:.4f} val={val_loss:.4f}")
+
+    return history
+
+
+if __name__ == "__main__":
+    train_df = pd.read_csv("train.csv")
+    val_df = pd.read_csv("val.csv")
+
+    train_loader = DataLoader(PermutationDataset(train_df), batch_size=32, shuffle=True, collate_fn=collate_fn)
+    val_loader = DataLoader(PermutationDataset(val_df), batch_size=32, collate_fn=collate_fn)
+
+    model = LengthPredictor()
+    history = train_model(model, train_loader, val_loader)
+
+    torch.save(model.state_dict(), "model.pt")
+    with open("history.json", "w") as f:
+        json.dump(history, f)
+    print("Saved model.pt and history.json")
