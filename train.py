@@ -1,3 +1,4 @@
+# Training details 
 import json
 import pandas as pd
 import torch
@@ -6,14 +7,19 @@ from torch.utils.data import DataLoader
 
 from data_utils import PermutationDataset, collate_fn, LengthPredictor
 
-
+# I defined learning rate to be 0.001
 def train_model(model, train_loader, val_loader, epochs=40, lr=1e-3, device="cpu"):
+    # optimizer that updates the parameters
     opt = torch.optim.Adam(model.parameters(), lr=lr)
+    # use MSE to calculate the loss function
     loss_fn = nn.MSELoss()
+    # document all the training and validation loss
     history = {"train_loss": [], "val_loss": []}
 
+    # training up till 40 times
     for epoch in range(epochs):
         model.train()
+        # reset total loss = 0
         total = 0
         for x, lens, y in train_loader:
             x, y = x.to(device), y.to(device)
@@ -24,7 +30,7 @@ def train_model(model, train_loader, val_loader, epochs=40, lr=1e-3, device="cpu
             opt.step()
             total += loss.item() * len(y)
         train_loss = total / len(train_loader.dataset)
-
+        # validation set
         model.eval()
         with torch.no_grad():
             val_total = sum(
