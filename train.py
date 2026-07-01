@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 from data_utils import PermutationDataset, collate_fn, LengthPredictor
 
 # I defined learning rate to be 0.001
-def train_model(model, train_loader, val_loader, epochs=40, lr=1e-3, device="cpu"):
+def train_model(model, train_loader, val_loader, epochs=1000, lr=1e-3, device="cpu"):
     # optimizer that updates the parameters
     opt = torch.optim.Adam(model.parameters(), lr=lr)
     # use MSE to calculate the loss function
