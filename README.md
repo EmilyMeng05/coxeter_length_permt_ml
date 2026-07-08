@@ -30,3 +30,14 @@ OR! use directly .length() which gives the Coxeter length.
 6. Evaluate using MSE =>(evaluation.py)
 7. Making some plots =>(evaluation.py)
 8. Reflection 
+
+
+# UPDATES!! 7.8.2026
+1. Experimenting with how to best deal with data inbalancing issue 
+- random split vs stratified split
+2. Results shown with labels 
+
+# Takeaways
+Seems like doing a random split generalizes better to longer permutations and 
+produces predictions that remain noticeably closer to the diagonal, indicating
+lower prediction error. 

@@ -48,6 +48,11 @@ def train_model(model, train_loader, val_loader, epochs=1000, lr=1e-3, device="c
 
 
 if __name__ == "__main__":
+    # first train the stratified version
+    # train_df = pd.read_csv("train.csv")
+    # val_df = pd.read_csv("val.csv")
+
+    # train the random split part
     train_df = pd.read_csv("train.csv")
     val_df = pd.read_csv("val.csv")
 
@@ -57,7 +62,16 @@ if __name__ == "__main__":
     model = LengthPredictor()
     history = train_model(model, train_loader, val_loader)
 
-    torch.save(model.state_dict(), "model.pt")
-    with open("history.json", "w") as f:
+    # Stratified data split
+    torch.save(model.state_dict(), "model_stratified.pt")
+
+    with open("history_stratified.json","w") as f:
         json.dump(history, f)
     print("Saved model.pt and history.json")
+
+    # RANDOM SPLIT
+    # torch.save(model.state_dict(), "model_random.pt")
+
+    # with open("history_random.json","w") as f:
+    #     json.dump(history, f)
+    # print("Saved model.pt and history.json")
