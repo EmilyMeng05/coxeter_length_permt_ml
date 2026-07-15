@@ -1,12 +1,12 @@
 # This file contains reading the dataset 
 # Do Train, Validation, and Test set 
 import pandas as pd
+import numpy as np
 import ast
 
 # read over the csv file
 def load_data(file="coxeter_length_data_S6.csv"):
     df = pd.read_csv(file)
-    # convert strings into lists
     df["permutation"] = df["permutation"].apply(ast.literal_eval)
     return df
 
@@ -83,10 +83,6 @@ def random_split(df, splits=(0.7, 0.15, 0.15), seed=37):
     '''
 
     return train_df, val_df, test_df
-
-# Encoding 
-def encode_permutation(perm):
-    return perm
 
 if __name__ == "__main__":
     df = load_data()

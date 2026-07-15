@@ -41,3 +41,15 @@ OR! use directly .length() which gives the Coxeter length.
 Seems like doing a random split generalizes better to longer permutations and 
 produces predictions that remain noticeably closer to the diagonal, indicating
 lower prediction error. 
+
+
+# UPDATES!! 7.15.2026
+1. Removed the embedding layer from LSTM
+2. Used one-hot embedding layer instead for LSTM
+3. Run some experiments 
+
+# Takeaways 
+Not sure how I missed it.. But I have been overfitting my models.. with really low MSE.
+Need to fix it. Started running fewer epochs. 
+
+One-hot embedding layer works better than just a basic embedding layer! 
