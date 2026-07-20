@@ -6,8 +6,8 @@ import pandas as pd
 import torch
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
-from preprocess import load_data
-from data_utils import PermutationDataset, collate_fn, LengthPredictor
+from coxeter_length_pred_exercise.preprocess import load_data
+from coxeter_length_pred_exercise.data_utils import PermutationDataset, collate_fn, LengthPredictor
 
 def evaluate(model, loader, device="cpu"):
     model.eval()

@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 
-from data_utils import PermutationDataset, collate_fn, LengthPredictor
+from coxeter_length_pred_exercise.data_utils import PermutationDataset, collate_fn, LengthPredictor
 
 # Train the model
 def train_model(model, train_loader, val_loader, epochs=100, lr=1e-3, device="cpu"):
