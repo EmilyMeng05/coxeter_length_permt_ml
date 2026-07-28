@@ -1,10 +1,10 @@
 import ast
+import pandas as pd
 
 class RSKTokenizer:
 
     def __init__(self):
 
-        # Special tokens
         self.vocab = {
             "<PAD>": 0,
             "<BOS>": 1,
@@ -16,11 +16,37 @@ class RSKTokenizer:
             "/": 7
         }
 
-        # Numbers 1 through 6
-        for i in range(1, 7):
-            self.vocab[str(i)] = len(self.vocab)
+        # we don't want to hard code the number of tokens
+        self.id_to_token = {}
 
-        # Reverse dictionary
+    # this file will automatically know the number of digits we want
+    # by reading through the file
+    def build_vocab(self, csv_file):
+
+        data = pd.read_csv(csv_file)
+
+        numbers = set()
+
+        for _, row in data.iterrows():
+
+            permutation = ast.literal_eval(row["permutation"])
+            P = ast.literal_eval(row["P"])
+            Q = ast.literal_eval(row["Q"])
+
+            # permutation
+            numbers.update(permutation)
+
+            # P tableau
+            for tableau_row in P:
+                numbers.update(tableau_row)
+
+            # Q tableau
+            for tableau_row in Q:
+                numbers.update(tableau_row)
+
+        for number in sorted(numbers):
+            self.vocab[str(number)] = len(self.vocab)
+
         self.id_to_token = {
             value: key for key, value in self.vocab.items()
         }
