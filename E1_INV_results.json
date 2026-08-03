@@ -1,0 +1,6 @@
+{
+    "experiment": "E1_INV",
+    "test_loss": 0.06850285952289899,
+    "token_accuracy": 0.9829545454545454,
+    "exact_accuracy": 0.9659090909090909
+}

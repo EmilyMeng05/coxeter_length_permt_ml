@@ -1,0 +1,6 @@
+{
+    "experiment": "E4_ONE_CYCLE_LEHMER_INV",
+    "test_loss": 0.028595831245183945,
+    "token_accuracy": 0.9943181818181818,
+    "exact_accuracy": 0.9886363636363636
+}

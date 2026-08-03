@@ -1,0 +1,6 @@
+{
+    "experiment": "E1_ONE",
+    "test_loss": 0.1788421074549357,
+    "token_accuracy": 0.9431818181818182,
+    "exact_accuracy": 0.8863636363636364
+}

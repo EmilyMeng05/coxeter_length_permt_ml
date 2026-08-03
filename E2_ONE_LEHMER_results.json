@@ -1,0 +1,6 @@
+{
+    "experiment": "E2_ONE_LEHMER",
+    "test_loss": 0.10653194536765416,
+    "token_accuracy": 0.9829545454545454,
+    "exact_accuracy": 0.9659090909090909
+}

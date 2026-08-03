@@ -1,0 +1,6 @@
+{
+    "experiment": "E2_ONE_CYCLE",
+    "test_loss": 0.056228517244259514,
+    "token_accuracy": 0.9886363636363636,
+    "exact_accuracy": 0.9772727272727273
+}
