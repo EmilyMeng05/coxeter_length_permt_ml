@@ -1,6 +1,6 @@
 import torch
-from tokenizer import RSKTokenizer
-from model import RSKTransformer
+from coxeter_length_transformer.tokenizer import RSKTokenizer
+from coxeter_length_transformer.model import RSKTransformer
 
 
 device = torch.device(

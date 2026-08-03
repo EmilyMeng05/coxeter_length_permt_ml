@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
-from data_utils import RSKDataset, collate_fn
-from model import RSKTransformer
+from coxeter_length_transformer.data_utils import RSKDataset, collate_fn
+from coxeter_length_transformer.model import RSKTransformer
 
 
 # Device

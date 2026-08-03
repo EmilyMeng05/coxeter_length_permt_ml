@@ -5,7 +5,7 @@ import torch
 from torch.utils.data import Dataset
 from torch.nn.utils.rnn import pad_sequence
 
-from tokenizer import RSKTokenizer
+from coxeter_length_transformer.tokenizer import RSKTokenizer
 
 
 class RSKDataset(Dataset):
