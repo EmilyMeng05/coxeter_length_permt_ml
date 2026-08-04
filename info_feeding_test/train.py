@@ -4,10 +4,10 @@ import torch.nn as nn
 from torch.optim import Adam
 import json
 
-from data_utils import PermutationDataset, collate_fn
-from tokenizer import MathTokenizer
-from model import MathTransformer
-import config
+from info_feeding_test.data_utils import PermutationDataset, collate_fn
+from info_feeding_test.tokenizer import MathTokenizer
+from info_feeding_test.model import MathTransformer
+import info_feeding_test.config as config
 
 def evaluate(
     model,

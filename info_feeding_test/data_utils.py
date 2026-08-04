@@ -2,7 +2,7 @@ import pandas as pd
 import torch
 from torch.utils.data import Dataset
 from torch.nn.utils.rnn import pad_sequence
-from tokenizer import MathTokenizer
+from info_feeding_test.tokenizer import MathTokenizer
 
 
 class PermutationDataset(Dataset):

@@ -1,6 +1,6 @@
 import glob
-import config
-import evaluation
+import info_feeding_test.config as config
+import info_feeding_test.evaluation as evaluation
 
 
 def get_config_from_name(name):

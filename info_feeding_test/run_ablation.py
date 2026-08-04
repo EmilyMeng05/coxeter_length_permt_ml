@@ -1,7 +1,7 @@
 from itertools import combinations
-import config
-import train
-import evaluation
+import info_feeding_test.config as config
+import info_feeding_test.train as train
+import info_feeding_test.evaluation as evaluation
 
 
 ENCODINGS = [
